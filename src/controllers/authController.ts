@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { signToken } from "../middlewares/createToken";
+import { createSendToken } from "../utils";
 import User from "../models/userModel";
 
 export const signup = async (req: Request, res: Response) => {
@@ -20,15 +20,7 @@ export const signup = async (req: Request, res: Response) => {
       password,
       passwordConfirm,
     });
-
-    const token = signToken(newUser._id);
-
-    res.status(201).json({
-      status: "success",
-      message: "User created successfully!.Auth",
-      token,
-      data: { user: { name, email } },
-    });
+    createSendToken(newUser, 201, res);
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "Error", message: "Error creating user" });
@@ -38,6 +30,7 @@ export const signup = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    console.log(req.cookies);
     if (!email || !password)
       return res
         .status(400)
@@ -57,17 +50,7 @@ export const login = async (req: Request, res: Response) => {
         .json({ status: "error", message: "Incorrect email or password" });
     }
 
-    const { name, ...info } = user;
-    const token = signToken(user._id);
-
-    res.status(200).json({
-      status: "success",
-      message: "You are now signed in. Happy Eating!😁😃",
-      token,
-      data: {
-        user: { name, email },
-      },
-    });
+    createSendToken(user, 200, res);
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "Error", message: "Error creating user" });
