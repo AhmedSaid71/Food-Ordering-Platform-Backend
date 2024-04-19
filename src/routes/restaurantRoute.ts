@@ -1,8 +1,15 @@
 import express from "express";
 import { createRestaurant } from "../controllers";
-import { upload } from "../middlewares";
+import { protect, upload } from "../middlewares";
+import { createRestaurantValidator } from "../utils";
 
 const router = express.Router();
 
-router.post("/", upload.single("imageFile"), createRestaurant);
+router.post(
+  "/",
+  upload.single("imageFile"),
+  createRestaurantValidator,
+  protect,
+  createRestaurant
+);
 export default router;
