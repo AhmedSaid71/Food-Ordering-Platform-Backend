@@ -56,3 +56,11 @@ export const login = async (req: Request, res: Response) => {
     res.status(500).json({ status: "Error", message: "Error creating user" });
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  res.cookie("jwt", "loggedout", {
+    expires: new Date(Date.now() + 10 * 1000),
+    httpOnly: true,
+  });
+  res.status(200).json({ status: "success" });
+};

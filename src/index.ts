@@ -3,10 +3,10 @@ import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
 import userRoute from "./routes/userRoute";
+import authRoute from "./routes/authRoute";
 import restaurantRoute from "./routes/restaurantRoute";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
-
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
   .then(() => {
@@ -36,6 +36,7 @@ app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "success", message: "health OK!" });
 });
 
+app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/restaurant", restaurantRoute);
 
