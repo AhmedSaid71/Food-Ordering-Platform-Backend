@@ -22,21 +22,27 @@ export const protect = async (
       message: "You are not logged in! Please log in to get access.",
     });
   }
+  try {
+    const decoded = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string
+    ) as jwt.JwtPayload;
 
-  const decoded = jwt.verify(
-    token,
-    process.env.JWT_SECRET as string
-  ) as jwt.JwtPayload;
+    const currentUser = await User.findById(decoded.id);
 
-  const currentUser = await User.findById(decoded.id);
-
-  if (!currentUser) {
+    if (!currentUser) {
+      return res.status(401).json({
+        status: "failed",
+        message: "The user belonging to this token does no longer exist.",
+      });
+    }
+    req.user = currentUser;
+    next();
+  } catch (error) {
+    console.log(error);
     return res.status(401).json({
-      status: "failed",
-      message: "The user belonging to this token does no longer exist.",
+      status: "error",
+      message: "Invalid token! Please log in again to get access.",
     });
   }
-
-  req.user = currentUser;
-  next();
 };

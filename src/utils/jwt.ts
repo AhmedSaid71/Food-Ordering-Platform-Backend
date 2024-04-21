@@ -16,14 +16,8 @@ export const createSendToken = (
   const token = signToken(user._id);
   const cookieOptions = {
     expires: new Date(
-      Date.now() + 90 * 24 * 60 * 60 * 1000
-
-      // Date.now() +
-      //   Number(parseInt(process.env.JWT_COOKIE_EXPIRES_IN)) *
-      //     24 *
-      //     60 *
-      //     60 *
-      //     1000
+      Date.now() +
+        Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000
     ),
     // secure: true,
     httpOnly: true,
