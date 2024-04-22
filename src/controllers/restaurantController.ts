@@ -10,7 +10,7 @@ export const createRestaurant = async (req: Request, res: Response) => {
     if (existingRestaurant) {
       return res
         .status(409)
-        .json({ message: "User restaurant already exists" });
+        .json({ status: "fail", message: "User restaurant already exists" });
     }
 
     const imageUrl = await uploadImage(req.file as Express.Multer.File);
@@ -27,6 +27,28 @@ export const createRestaurant = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Something went wrong" });
+    res.status(500).json({ status: "error", message: "Something went wrong" });
+  }
+};
+
+export const getRestaurant = async (req: Request, res: Response) => {
+  try {
+    const id = req.user._id;
+    const restaurant = await Restaurant.findOne({ user: id });
+
+    if (!restaurant) {
+      return res
+        .status(404)
+        .json({ status: "fail", message: "restaurant not found" });
+    }
+    res.status(200).json({
+      status: "success",
+      data: { restaurant },
+    });
+  } catch (error) {
+    console.log(error);
+    res
+      .status(500)
+      .json({ status: "error", message: "Error fetching restaurant" });
   }
 };
