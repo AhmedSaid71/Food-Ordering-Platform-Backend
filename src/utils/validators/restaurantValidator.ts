@@ -8,7 +8,7 @@ export const createRestaurantValidator = [
   body("deliveryPrice")
     .isFloat({ min: 0 })
     .withMessage("Delivery price must be a positive number"),
-  body("estimateDeliveryTime")
+  body("estimatedDeliveryTime")
     .isInt({ min: 0 })
     .withMessage("Estimate delivery time must be a positive number "),
   body("cuisines")
