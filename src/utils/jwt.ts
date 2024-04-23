@@ -26,6 +26,10 @@ export const createSendToken = (
   res.cookie("jwt", token, cookieOptions);
   res.status(statusCode).json({
     status: "success",
+    message:
+      statusCode === 200
+        ? "You are now Logged in!.\n Happy eating😁"
+        : "You have created account successfully.\n You can login now",
     token,
     data: {
       user,

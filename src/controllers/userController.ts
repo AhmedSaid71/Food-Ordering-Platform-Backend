@@ -1,18 +1,16 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import User from "../models/userModel";
-import { filterObj } from "../utils";
+import { catchAsync, filterObj } from "../utils";
 
-export const getMe = async (req: Request, res: Response) => {
-  try {
+export const getMe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const user = await User.findById(req.user._id);
     res.status(200).json({ status: "success", data: user });
-  } catch (error) {
-    res.status(500).json({ status: "Error", message: "Error getting user" });
   }
-};
+);
 
-export const updateMe = async (req: Request, res: Response) => {
-  try {
+export const updateMe = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const filterBody = filterObj(
       req.body,
       "name",
@@ -28,15 +26,10 @@ export const updateMe = async (req: Request, res: Response) => {
 
     res.status(200).json({
       status: "success",
+      message: "User updated successfully",
       data: {
         user: updatedUser,
       },
     });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      status: "Error",
-      message: "Error updating user",
-    });
   }
-};
+);

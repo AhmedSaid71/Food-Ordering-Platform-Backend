@@ -1,17 +1,14 @@
-import { Request, Response } from "express";
-import { createSendToken } from "../utils";
+import { NextFunction, Request, Response } from "express";
+import { catchAsync, createSendToken, ApiError } from "../utils";
 import User from "../models/userModel";
 
-export const signup = async (req: Request, res: Response) => {
-  try {
+export const signup = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const { name, email, password, passwordConfirm } = req.body;
 
     const user = await User.findOne({ email });
     if (user) {
-      return res.status(409).json({
-        status: "fail",
-        message: "Email already signed up!",
-      });
+      return next(new ApiError("Email already signed up!", 409));
     }
 
     const newUser = await User.create({
@@ -20,46 +17,39 @@ export const signup = async (req: Request, res: Response) => {
       password,
       passwordConfirm,
     });
-    createSendToken(newUser, 201, res);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Error", message: "Error creating user" });
-  }
-};
 
-export const login = async (req: Request, res: Response) => {
-  try {
+    createSendToken(newUser, 201, res);
+  }
+);
+
+export const login = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     if (!email || !password)
-      return res
-        .status(400)
-        .json({ status: "fail", message: "Email and password are required" });
+      return next(new ApiError("Email and password are required!", 400));
 
     const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ status: "fail", message: "User not found!" });
+      return next(new ApiError("User not found!. Please signup first!.", 404));
     }
 
     if (!(await user.correctPassword(password, user.password))) {
-      return res
-        .status(401)
-        .json({ status: "fail", message: "Incorrect email or password" });
+      return next(new ApiError("Invalid credentials", 401));
     }
 
     createSendToken(user, 200, res);
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Error", message: "Error creating user" });
   }
-};
+);
 
-export const logout = async (req: Request, res: Response) => {
-  res.cookie("jwt", "loggedout", {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
-  });
-  res.status(200).json({ status: "success" });
-};
+export const logout = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    res.cookie("jwt", "loggedOut", {
+      expires: new Date(Date.now() * 1000),
+      httpOnly: true,
+    });
+    res
+      .status(200)
+      .json({ status: "success", message: "You are now logged out!" });
+  }
+);

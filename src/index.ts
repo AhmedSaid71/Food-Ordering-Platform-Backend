@@ -7,6 +7,9 @@ import authRoute from "./routes/authRoute";
 import restaurantRoute from "./routes/restaurantRoute";
 import cookieParser from "cookie-parser";
 import { v2 as cloudinary } from "cloudinary";
+import { ApiError } from "./utils/apiError";
+import { globalError } from "./middlewares";
+
 mongoose
   .connect(process.env.MONGODB_CONNECTION_STRING as string)
   .then(() => {
@@ -39,8 +42,23 @@ app.get("/health", (req: Request, res: Response) => {
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/user", userRoute);
 app.use("/api/v1/restaurant", restaurantRoute);
+app.all("*", (req, res, next) => {
+  // send the error to global error handler
+  next(new ApiError(`Can't find this route ${req.originalUrl}`, 400));
+});
+app.use(globalError);
 
 const PORT = process.env.PORT || `8000`;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+});
+//handle the errors that happens outside express
+process.on("unhandledRejection", (err: Error) => {
+  console.log("UNHANDLED REJECTION 💥 shutting down...");
+  console.log(err.name, err.message);
+  //close method handle if any pending requests to the server then it shutdown the server by calling process.exit
+  server.close(() => {
+    console.log("Shutting down!!!");
+    process.exit(1);
+  });
 });
