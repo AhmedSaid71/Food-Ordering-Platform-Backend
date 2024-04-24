@@ -1,5 +1,9 @@
 import express from "express";
-import { createRestaurant, getRestaurant } from "../controllers";
+import {
+  createRestaurant,
+  getRestaurant,
+  updateRestaurant,
+} from "../controllers";
 import { protect, upload } from "../middlewares";
 import { createRestaurantValidator } from "../utils";
 
@@ -12,5 +16,11 @@ router.post(
   createRestaurantValidator,
   protect,
   createRestaurant
+);
+router.patch(
+  "/",
+  upload.single("imageFile"),
+  protect,
+  updateRestaurant
 );
 export default router;
