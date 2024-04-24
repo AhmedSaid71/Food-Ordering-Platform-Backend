@@ -35,8 +35,8 @@ const corsOptions = {
   credentials: true,
   optionSuccessStatus: 200,
 };
-app.use(cors(corsOptions));
-
+app.use(cors());
+app.options("*", cors());
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "success", message: "health OK!" });
 });
