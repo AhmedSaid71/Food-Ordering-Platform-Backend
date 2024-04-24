@@ -37,7 +37,6 @@ export const protect = async (
       });
     }
     req.user = currentUser;
-    console.log(token);
     next();
   } catch (error) {
     console.log(error);
