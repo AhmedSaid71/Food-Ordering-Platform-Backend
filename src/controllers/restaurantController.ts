@@ -68,7 +68,10 @@ export const updateRestaurant = catchAsync(
     }
     const updatedRestaurant = await Restaurant.findOneAndUpdate(
       { user: req.user._id },
-      filterBody
+      filterBody,
+      {
+        new: true,
+      }
     );
 
     res.status(200).json({

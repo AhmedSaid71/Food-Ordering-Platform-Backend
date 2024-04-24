@@ -31,7 +31,7 @@ app.use(cookieParser());
 const corsOptions = {
   origin:
     "http://localhost:5173" ||
-    "https://food-ordering-platform-backend-baar.onrender.com",
+    "https://food-ordering-platform-frontend-j1ui.onrender.com",
   credentials: true,
   optionSuccessStatus: 200,
 };
