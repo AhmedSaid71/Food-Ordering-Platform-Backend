@@ -16,12 +16,12 @@ export const createRestaurant = catchAsync(
     }
 
     const imageUrl = await uploadImage(req.file as Express.Multer.File);
-    const restaurant = new Restaurant(req.body);
-    restaurant.imageUrl = imageUrl;
-    restaurant.user = new mongoose.Types.ObjectId(req.user._id);
-
-    await restaurant.save();
-
+    const restaurant = await Restaurant.create({
+      ...req.body,
+      imageUrl,
+      user: req.user._id,
+    });
+    console.log(restaurant);
     res.status(201).json({
       status: "success",
       message: "Restaurant created successfully",
