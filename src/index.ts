@@ -29,21 +29,24 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser());
 const corsOptions = {
-  origin:
-    "http://localhost:5173" ||
-    "https://food-ordering-platform-frontend-j1ui.onrender.com",
+  origin: "http://localhost:5173",
   credentials: true,
   optionSuccessStatus: 200,
 };
-app.use(cors());
-app.options("*", cors());
+app.use(cors(corsOptions));
+// app.options("*", cors());
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "success", message: "health OK!" });
 });
+app.get("/", (req: Request, res: Response) => {
+  res
+    .status(200)
+    .json({ status: "success", message: "Welcome to MearnEats!!." });
+});
 
 app.use("/api/v1/auth", authRoute);
-app.use("/api/v1/user", userRoute);
-app.use("/api/v1/restaurant", restaurantRoute);
+app.use("/api/v1/users", userRoute);
+app.use("/api/v1/restaurants", restaurantRoute);
 app.all("*", (req, res, next) => {
   // send the error to global error handler
   next(new ApiError(`Can't find this route ${req.originalUrl}`, 400));

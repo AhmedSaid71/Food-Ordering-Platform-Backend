@@ -3,6 +3,60 @@ import { NextFunction, Request, Response } from "express";
 import Restaurant from "../models/restaurantModel";
 import { ApiError, catchAsync, filterObj, uploadImage } from "../utils";
 
+export const getRestaurants = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { city } = req.params;
+
+    const searchQuery = (req.query.searchQuery as string) || "";
+    const selectedCuisines = (req.query.selectedCuisines as string) || "";
+    const sortOption = (req.query.sortOption as string) || "lastUpdated";
+    const page = parseInt(req.query.page as string) || 1;
+
+    let query: any = {};
+
+    query["city"] = new RegExp(city, "i");
+
+    const check = await Restaurant.countDocuments(query);
+    if (!check) {
+      return res.status(200).json({
+        status: "success",
+        results: 0,
+        data: {
+          restaurants: [],
+        },
+      });
+    }
+    
+    if (selectedCuisines) {
+      const cuisinesArray = selectedCuisines
+        .split(",")
+        .map((cuisine) => new RegExp(cuisine, "i"));
+      query["cuisines"] = { $all: cuisinesArray };
+    }
+
+    if (searchQuery) {
+      const searchRegex = new RegExp(searchQuery, "i");
+      query["$or"] = [
+        { name: searchRegex },
+        { cuisines: { $in: [searchRegex] } },
+      ];
+    }
+    const restaurants = await Restaurant.find(query);
+
+    res.status(200).json({
+      status: "success",
+      results: restaurants.length,
+      data: {
+        restaurants,
+      },
+    });
+  }
+);
+
+export const getRestaurant = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {}
+);
+
 export const createRestaurant = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const existingRestaurant = await Restaurant.findOne({
@@ -21,7 +75,6 @@ export const createRestaurant = catchAsync(
       imageUrl,
       user: req.user._id,
     });
-    console.log(restaurant);
     res.status(201).json({
       status: "success",
       message: "Restaurant created successfully",
@@ -30,7 +83,7 @@ export const createRestaurant = catchAsync(
   }
 );
 
-export const getRestaurant = catchAsync(
+export const getUserRestaurant = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.user._id;
     const restaurant = await Restaurant.findOne({ user: id });
@@ -46,7 +99,7 @@ export const getRestaurant = catchAsync(
   }
 );
 
-export const updateRestaurant = catchAsync(
+export const updateUserRestaurant = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const restaurant = await Restaurant.findOne({ user: req.user._id });
     if (!restaurant) return next(new ApiError("Restaurant not found!", 404));

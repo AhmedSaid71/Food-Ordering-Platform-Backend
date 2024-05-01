@@ -1,4 +1,4 @@
-import { body } from "express-validator";
+import { body, check, param } from "express-validator";
 import { validatorMiddleware } from "../../middlewares";
 
 export const createRestaurantValidator = [
@@ -23,5 +23,20 @@ export const createRestaurantValidator = [
   body("menuItems.*.price")
     .isFloat({ min: 0 })
     .withMessage("Menu items price must be a positive number"),
+  validatorMiddleware,
+];
+
+export const getUserRestaurantsValidator = [
+  check("id")
+    .isMongoId()
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("Please provide a valid id!!"),
+  validatorMiddleware,
+];
+
+export const getAllUserRestaurantsValidator = [
+  param("city").isString().trim().notEmpty().withMessage("City is required!"),
   validatorMiddleware,
 ];

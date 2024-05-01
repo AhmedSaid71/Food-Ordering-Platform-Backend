@@ -1,15 +1,25 @@
 import express from "express";
+
 import {
   createRestaurant,
   getRestaurant,
-  updateRestaurant,
+  getRestaurants,
+  getUserRestaurant,
+  updateUserRestaurant,
 } from "../controllers";
+
 import { protect, upload } from "../middlewares";
-import { createRestaurantValidator } from "../utils";
+import {
+  createRestaurantValidator,
+  getAllUserRestaurantsValidator,
+  getUserRestaurantsValidator,
+} from "../utils";
 
 const router = express.Router();
 
-router.get("/", upload.single("imageFile"), protect, getRestaurant);
+router.get("/me", upload.single("imageFile"), protect, getUserRestaurant);
+router.get("/:city", getAllUserRestaurantsValidator, getRestaurants);
+router.get("/:id", getUserRestaurantsValidator, getRestaurant);
 router.post(
   "/",
   upload.single("imageFile"),
@@ -17,10 +27,6 @@ router.post(
   protect,
   createRestaurant
 );
-router.patch(
-  "/",
-  upload.single("imageFile"),
-  protect,
-  updateRestaurant
-);
+router.patch("/", upload.single("imageFile"), protect, updateUserRestaurant);
+
 export default router;
