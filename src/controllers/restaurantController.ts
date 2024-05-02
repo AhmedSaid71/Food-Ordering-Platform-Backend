@@ -11,7 +11,9 @@ export const getRestaurants = catchAsync(
     const selectedCuisines = (req.query.selectedCuisines as string) || "";
     const sortOption = (req.query.sortOption as string) || "lastUpdated";
     const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
 
+    const skip = (page - 1) * limit;
     let query: any = {};
 
     query["city"] = new RegExp(city, "i");
@@ -26,7 +28,7 @@ export const getRestaurants = catchAsync(
         },
       });
     }
-    
+
     if (selectedCuisines) {
       const cuisinesArray = selectedCuisines
         .split(",")
@@ -41,11 +43,13 @@ export const getRestaurants = catchAsync(
         { cuisines: { $in: [searchRegex] } },
       ];
     }
-    const restaurants = await Restaurant.find(query);
-
+    const restaurants = await Restaurant.find(query).skip(skip).limit(limit);
+    const total = await Restaurant.countDocuments(query);
     res.status(200).json({
       status: "success",
-      results: restaurants.length,
+      total,
+      page,
+      pages: Math.ceil(total / limit),
       data: {
         restaurants,
       },
