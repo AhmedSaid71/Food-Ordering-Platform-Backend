@@ -43,6 +43,7 @@ export const getRestaurants = catchAsync(
         { cuisines: { $in: [searchRegex] } },
       ];
     }
+
     const restaurants = await Restaurant.find(query)
       .sort({ [sortOption]: 1 })
       .skip(skip)
@@ -64,7 +65,19 @@ export const getRestaurants = catchAsync(
 );
 
 export const getRestaurant = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {}
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    console.log(id);
+    const restaurant = await Restaurant.findById(id);
+    if (!restaurant)
+      return next(new ApiError(`No restaurant found for this id:${id}!!`, 404));
+    res.status(200).json({
+      status: "success",
+      data: {
+        restaurant,
+      },
+    });
+  }
 );
 
 export const createRestaurant = catchAsync(

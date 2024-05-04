@@ -12,6 +12,7 @@ import { protect, upload } from "../middlewares";
 import {
   createRestaurantValidator,
   getAllUserRestaurantsValidator,
+  getRestaurantValidator,
   getUserRestaurantsValidator,
 } from "../utils";
 
@@ -19,7 +20,8 @@ const router = express.Router();
 
 router.get("/me", upload.single("imageFile"), protect, getUserRestaurant);
 router.get("/:city", getAllUserRestaurantsValidator, getRestaurants);
-router.get("/:id", getUserRestaurantsValidator, getRestaurant);
+router.get("/details/:id", getRestaurantValidator, getRestaurant);
+
 router.post(
   "/",
   upload.single("imageFile"),
@@ -27,6 +29,7 @@ router.post(
   protect,
   createRestaurant
 );
+
 router.patch("/", upload.single("imageFile"), protect, updateUserRestaurant);
 
 export default router;

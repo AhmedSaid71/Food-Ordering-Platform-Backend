@@ -35,8 +35,25 @@ export const getUserRestaurantsValidator = [
     .withMessage("Please provide a valid id!!"),
   validatorMiddleware,
 ];
+export const getRestaurantValidator = [
+  param("id")
+    .isMongoId()
+    .withMessage("Please provide a valid id!!")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("Please provide a valid id!!"),
+  validatorMiddleware,
+];
 
 export const getAllUserRestaurantsValidator = [
-  param("city").isString().trim().notEmpty().withMessage("City is required!"),
+  param("city")
+    .isString()
+    .trim()
+    .notEmpty()
+    .withMessage("City is required!")
+    .not()
+    .isMongoId()
+    .withMessage("Please provide a valid city"),
   validatorMiddleware,
 ];
