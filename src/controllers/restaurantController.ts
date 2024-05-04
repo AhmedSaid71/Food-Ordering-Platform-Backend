@@ -43,8 +43,14 @@ export const getRestaurants = catchAsync(
         { cuisines: { $in: [searchRegex] } },
       ];
     }
-    const restaurants = await Restaurant.find(query).skip(skip).limit(limit);
+    const restaurants = await Restaurant.find(query)
+      .sort({ [sortOption]: 1 })
+      .skip(skip)
+      .limit(limit)
+      .lean();
+
     const total = await Restaurant.countDocuments(query);
+
     res.status(200).json({
       status: "success",
       total,
