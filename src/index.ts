@@ -28,8 +28,13 @@ cloudinary.config({
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
+// const corsOptions = {
+//   origin: "http://0.0.0.0:5173",
+//   credentials: true,
+//   optionSuccessStatus: 200,
+// };
 const corsOptions = {
-  origin: "http://localhost:5173",
+  origin: "https://food-ordering-platform-backend-baar.onrender.com/api/v1",
   credentials: true,
   optionSuccessStatus: 200,
 };
