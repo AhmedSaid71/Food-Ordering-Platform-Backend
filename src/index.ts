@@ -34,7 +34,7 @@ app.use(cookieParser());
 //   optionSuccessStatus: 200,
 // };
 const corsOptions = {
-  origin: "https://food-ordering-platform-backend-baar.onrender.com/api/v1",
+  origin: "https://food-ordering-platform-backend-baar.onrender.com",
   credentials: true,
   optionSuccessStatus: 200,
 };
