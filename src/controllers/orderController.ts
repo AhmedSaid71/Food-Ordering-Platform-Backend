@@ -24,10 +24,9 @@ export const createCheckoutSession = catchAsync(
       checkoutSessionRequest,
       restaurant.menuItems
     );
-
     const session = await createSession(
       lineItems,
-      "order test",
+      "newOrder._id.toString()",
       restaurant.deliveryPrice,
       restaurant._id.toString()
     );

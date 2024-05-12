@@ -19,7 +19,7 @@ export const createLineItems = (
 
     const line_item: Stripe.Checkout.SessionCreateParams.LineItem = {
       price_data: {
-        currency: "egp",
+        currency: "gbp",
         unit_amount: menuItem.price,
         product_data: {
           name: menuItem.name,
@@ -58,8 +58,8 @@ export const createSession = async (
       orderId,
       restaurantId,
     },
-    success_url: `${FRONTEND_URL}/order-status?success=true`,
-    cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
+    success_url: `${FRONTEND_URL}/test?success=true`,
+    cancel_url: `${FRONTEND_URL}/restaurant/${restaurantId}?cancelled=true`,
   });
 
   return sessionData;
