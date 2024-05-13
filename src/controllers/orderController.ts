@@ -87,3 +87,19 @@ export const createCheckoutSession = catchAsync(
     });
   }
 );
+
+export const getOrders = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user._id;
+    const orders = await Order.find({ user: userId })
+      .populate("restaurant")
+      .populate("user");
+    if (!orders) {
+      return next(new ApiError("There are no orders!!", 404));
+    }
+    res.status(200).json({
+      status: "success",
+      orders,
+    });
+  }
+);
