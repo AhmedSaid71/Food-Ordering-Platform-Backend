@@ -4,8 +4,7 @@ import { catchAsync, filterObj } from "../utils";
 
 export const getMe = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = await User.findById(req.user._id);
-    res.status(200).json({ status: "success", data: user });
+    res.status(200).json({ status: "success", data: req.user });
   }
 );
 
