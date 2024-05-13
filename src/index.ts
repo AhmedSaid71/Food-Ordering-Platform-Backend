@@ -27,8 +27,9 @@ cloudinary.config({
 });
 
 const app = express();
-app.use(express.json());
 app.use(cookieParser());
+app.use("/api/v1/orders/checkout/webhook", express.raw({ type: "*/*" }));
+app.use(express.json());
 
 const corsOptions = {
   origin: "http://localhost:5173",

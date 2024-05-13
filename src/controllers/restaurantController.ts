@@ -67,7 +67,6 @@ export const getRestaurants = catchAsync(
 export const getRestaurant = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
-    console.log(id);
     const restaurant = await Restaurant.findById(id);
     if (!restaurant)
       return next(new ApiError(`No restaurant found for this id:${id}!!`, 404));

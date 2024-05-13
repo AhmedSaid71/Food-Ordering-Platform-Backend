@@ -1,6 +1,6 @@
 import express from "express";
 import { protect } from "../middlewares";
-import { createCheckoutSession } from "../controllers";
+import { createCheckoutSession, stripeWebhookHandler } from "../controllers";
 
 const router = express.Router();
 
@@ -9,4 +9,5 @@ router.post(
   protect,
   createCheckoutSession
 );
+router.post("/checkout/webhook", stripeWebhookHandler);
 export default router;

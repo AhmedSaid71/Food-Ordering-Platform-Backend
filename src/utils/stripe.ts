@@ -11,11 +11,12 @@ export const createLineItems = (
 ) => {
   const lineItems = checkoutSessionRequest.cartItems.map((cartItem) => {
     const menuItem = menuItems.find(
-      (item) => item._id.toString() === cartItem.menuItemId
+      (item) => item._id.toString() === cartItem.menuItemId.toString()
     );
 
-    if (!menuItem)
-      throw new Error(`Menu item not found:${cartItem.menuItemId}`);
+    if (!menuItem) {
+      throw new Error(`Menu item not found: ${cartItem.menuItemId}`);
+    }
 
     const line_item: Stripe.Checkout.SessionCreateParams.LineItem = {
       price_data: {
@@ -30,6 +31,7 @@ export const createLineItems = (
 
     return line_item;
   });
+
   return lineItems;
 };
 
@@ -59,7 +61,7 @@ export const createSession = async (
       restaurantId,
     },
     success_url: `${FRONTEND_URL}/test?success=true`,
-    cancel_url: `${FRONTEND_URL}/restaurant/${restaurantId}?cancelled=true`,
+    cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
   });
 
   return sessionData;
