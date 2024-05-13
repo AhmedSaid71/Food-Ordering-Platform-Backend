@@ -99,7 +99,7 @@ export const getOrders = catchAsync(
     }
     res.status(200).json({
       status: "success",
-      orders,
+      data: { orders },
     });
   }
 );

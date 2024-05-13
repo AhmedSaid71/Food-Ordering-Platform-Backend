@@ -4,7 +4,7 @@ import { catchAsync, filterObj } from "../utils";
 
 export const getMe = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    res.status(200).json({ status: "success", data: req.user });
+    res.status(200).json({ status: "success", data: { user: req.user } });
   }
 );
 
