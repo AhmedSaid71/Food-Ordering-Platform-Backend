@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import { NextFunction, Request, Response } from "express";
 import Restaurant from "../models/restaurantModel";
+import Order from "../models/orderModel";
 import { ApiError, catchAsync, filterObj, uploadImage } from "../utils";
 
 export const getRestaurants = catchAsync(
@@ -154,5 +155,15 @@ export const updateUserRestaurant = catchAsync(
       message: "Restaurant updated successfully",
       data: { restaurant: updatedRestaurant },
     });
+  }
+);
+
+export const getRestaurantOrders = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const restaurant = await Restaurant.findOne({ user: req.user._id });
+    if (!restaurant) return next(new ApiError("Restaurant not found!", 404));
+
+    const orders = await Order.find({ restaurant: restaurant._id });
+    res.status(200).json({ status: "success", data: { orders } });
   }
 );

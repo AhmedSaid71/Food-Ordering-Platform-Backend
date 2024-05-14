@@ -3,6 +3,7 @@ import express from "express";
 import {
   createRestaurant,
   getRestaurant,
+  getRestaurantOrders,
   getRestaurants,
   getUserRestaurant,
   updateUserRestaurant,
@@ -18,10 +19,10 @@ import {
 
 const router = express.Router();
 
+router.get("/order", protect, getRestaurantOrders);
 router.get("/me", upload.single("imageFile"), protect, getUserRestaurant);
 router.get("/:city", getAllUserRestaurantsValidator, getRestaurants);
 router.get("/details/:id", getRestaurantValidator, getRestaurant);
-
 router.post(
   "/",
   upload.single("imageFile"),

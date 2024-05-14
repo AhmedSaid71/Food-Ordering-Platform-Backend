@@ -9,7 +9,6 @@ import {
 const router = express.Router();
 
 router.get("/", protect, getOrders);
-
 router.post(
   "/checkout/create-checkout-session",
   protect,
