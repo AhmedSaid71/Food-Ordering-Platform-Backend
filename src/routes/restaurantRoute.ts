@@ -6,6 +6,7 @@ import {
   getRestaurantOrders,
   getRestaurants,
   getUserRestaurant,
+  updateOrderStatus,
   updateUserRestaurant,
 } from "../controllers";
 
@@ -30,7 +31,7 @@ router.post(
   protect,
   createRestaurant
 );
-
+router.patch("/order/:orderId/status", protect, updateOrderStatus);
 router.patch("/", upload.single("imageFile"), protect, updateUserRestaurant);
 
 export default router;
