@@ -60,7 +60,7 @@ export const createSession = async (
       orderId,
       restaurantId,
     },
-    success_url: `${FRONTEND_URL}/test?success=true`,
+    success_url: `${FRONTEND_URL}/orders?success=true`,
     cancel_url: `${FRONTEND_URL}/detail/${restaurantId}?cancelled=true`,
   });
 
