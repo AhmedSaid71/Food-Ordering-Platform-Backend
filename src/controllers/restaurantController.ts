@@ -171,8 +171,7 @@ export const getRestaurantOrders = catchAsync(
 export const updateOrderStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { orderId } = req.params;
-    const { status } = req.body;
-
+    const status = req.body.status;
     const order = await Order.findById(orderId);
     if (!order) {
       return next(new ApiError("order not found", 404));
@@ -180,13 +179,12 @@ export const updateOrderStatus = catchAsync(
 
     const restaurant = await Restaurant.findById(order.restaurant);
 
-    if (restaurant?.user?._id.toString() !== req.user._id) {
-      return next(new ApiError("You are not authorized!!", 401));
+    if (restaurant?.user?._id?.toString() !== req.user._id.toString()) {
+      return next(new ApiError("You Can not do this action!!", 401));
     }
 
     order.status = status;
     await order.save();
-
     res.status(200).json({ status: "success", data: { order } });
   }
 );

@@ -28,8 +28,8 @@ export const createSendToken = (
     status: "success",
     message:
       statusCode === 200
-        ? "You are now Logged in!.\n Happy eating😁"
-        : "You have created account successfully.\n You can login now",
+        ? "Welcome to MernEats"
+        : "Your account have been created successfully",
     token,
     data: {
       user,

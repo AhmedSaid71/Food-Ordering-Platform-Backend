@@ -27,18 +27,18 @@ cloudinary.config({
 });
 
 const app = express();
+
 app.use(cookieParser());
 app.use("/api/v1/orders/checkout/webhook", express.raw({ type: "*/*" }));
 app.use(express.json());
 
-const corsOptions = {
-  origin: "http://localhost:5173",
-  credentials: true,
-  optionSuccessStatus: 200,
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+    methods: "GET,POST,PUT,DELETE,PATCH",
+  })
+);
 app.get("/health", (req: Request, res: Response) => {
   res.status(200).json({ status: "success", message: "health OK!" });
 });
