@@ -16,10 +16,12 @@ export const protect = async (
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
+  console.log(token);
+  console.log("cookie" + req.cookies.jwt);
   if (!token) {
     return res.status(401).json({
       status: "failed",
-      message: "You are not logged in! Please log in to get access.",
+      message: "Please log in to get access.",
     });
   }
   try {
