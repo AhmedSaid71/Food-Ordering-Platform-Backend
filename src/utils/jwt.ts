@@ -21,6 +21,10 @@ export const createSendToken = (
     ),
     secure: process.env.NODE_ENV === "production",
     httpOnly: true,
+    sameSite: (process.env.NODE_ENV === "production" ? "None" : "Lax") as
+      | "lax"
+      | "strict"
+      | "none",
   };
 
   res.cookie("jwt", token, cookieOptions);
