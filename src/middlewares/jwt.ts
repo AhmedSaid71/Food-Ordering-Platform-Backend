@@ -27,12 +27,13 @@ export const protect = async (
       token,
       process.env.JWT_SECRET as string
     ) as jwt.JwtPayload;
+
     const currentUser = await User.findById(decoded.id);
 
     if (!currentUser) {
       return res.status(401).json({
         status: "failed",
-        message: "Token is invalid or has expired.",
+        message: "The user belonging to this token does no longer exist.",
       });
     }
     req.user = currentUser;
