@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express, { NextFunction, Request, Response } from "express";
 import cors from "cors";
 import "dotenv/config";
 import mongoose from "mongoose";
@@ -52,7 +52,7 @@ app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", userRoute);
 app.use("/api/v1/restaurants", restaurantRoute);
 app.use("/api/v1/orders", orderRoute);
-app.all("*", (req, res, next) => {
+app.all("*", (req: Request, res: Response, next: NextFunction) => {
   // send the error to global error handler
   next(new ApiError(`Can't find this route ${req.originalUrl}`, 400));
 });

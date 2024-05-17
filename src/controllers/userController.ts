@@ -18,10 +18,14 @@ export const updateMe = catchAsync(
       "country"
     );
 
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, filterBody, {
-      new: true,
-      runValidators: true,
-    });
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user?._id,
+      filterBody,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
 
     res.status(200).json({
       status: "success",
