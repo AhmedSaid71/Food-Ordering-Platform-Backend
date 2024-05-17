@@ -8,9 +8,39 @@ importers:
 
   .:
     dependencies:
+      '@types/bcryptjs':
+        specifier: ^2.4.6
+        version: 2.4.6
+      '@types/cookie-parser':
+        specifier: ^1.4.7
+        version: 1.4.7
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/express-session':
+        specifier: ^1.18.0
+        version: 1.18.0
+      '@types/jsonwebtoken':
+        specifier: ^9.0.6
+        version: 9.0.6
       '@types/multer':
         specifier: ^1.4.11
         version: 1.4.11
+      '@types/node':
+        specifier: ^20.12.2
+        version: 20.12.7
+      '@types/passport':
+        specifier: ^1.0.16
+        version: 1.0.16
+      '@types/passport-google-oauth20':
+        specifier: ^2.0.16
+        version: 2.0.16
+      '@types/validator':
+        specifier: ^13.11.9
+        version: 13.11.9
       bcryptjs:
         specifier: ^2.4.3
         version: 2.4.3
@@ -66,36 +96,6 @@ importers:
         specifier: ^13.11.0
         version: 13.11.0
     devDependencies:
-      '@types/bcryptjs':
-        specifier: ^2.4.6
-        version: 2.4.6
-      '@types/cookie-parser':
-        specifier: ^1.4.7
-        version: 1.4.7
-      '@types/cors':
-        specifier: ^2.8.17
-        version: 2.8.17
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/express-session':
-        specifier: ^1.18.0
-        version: 1.18.0
-      '@types/jsonwebtoken':
-        specifier: ^9.0.6
-        version: 9.0.6
-      '@types/node':
-        specifier: ^20.12.2
-        version: 20.12.7
-      '@types/passport':
-        specifier: ^1.0.16
-        version: 1.0.16
-      '@types/passport-google-oauth20':
-        specifier: ^2.0.16
-        version: 2.0.16
-      '@types/validator':
-        specifier: ^13.11.9
-        version: 13.11.9
       eslint:
         specifier: ^9.0.0
         version: 9.0.0
